@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    title: "Cocos Parking",
+    title: "Parking Cocos",
     statusBarStyle: "black-translucent",
   },
 };

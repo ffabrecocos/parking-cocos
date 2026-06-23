@@ -1,5 +1,6 @@
 @import "../styles/shared.css";
 @import "../styles/parking-ui.css";
+@import "../styles/admin.css";
 
 html,
 body {
@@ -8,7 +9,7 @@ body {
 }
 
 body {
-  background: var(--bg-app);
+  background: var(--bg-admin);
   min-height: 100dvh;
 }
 
@@ -19,9 +20,9 @@ body {
 }
 
 .app--admin {
-  max-width: 960px;
-  margin: 0 auto;
   width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .app--login {

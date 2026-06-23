@@ -80,7 +80,7 @@ Typography: **Inter**. Mobile-first. Rounded corners 16–24px.
 | Admin edits slots | CRUD; delete only when unoccupied; force-release anytime |
 | Spreadsheet UX | Same **workflow**, not spreadsheet **visuals** — cards for employees, tables for admin |
 | Realtime | Supabase Realtime on occupancies (and spot changes for admin CRUD) |
-| PWA | `app/` only — manifest + icons; no offline sync in v1 |
+| PWA | `app/` only — manifest + icons; **offline claim queue** with auto-sync when signal returns |
 | Stats | Out of v1; `occupancies` history supports future dashboard |
 
 ---

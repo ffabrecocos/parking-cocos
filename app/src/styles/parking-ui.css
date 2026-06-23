@@ -4,7 +4,7 @@
 .parking-header {
   background: var(--cocos-navy);
   color: #fff;
-  padding: 8px 20px 32px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 20px 32px;
   flex-shrink: 0;
 }
 
@@ -92,7 +92,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 32px 32px;
+  padding: calc(48px + env(safe-area-inset-top, 0px)) 32px 32px;
   text-align: center;
   color: #fff;
 }
@@ -239,7 +239,36 @@
   font-size: 0.8125rem;
   color: var(--text-secondary);
   font-weight: 500;
-  margin-top: 2px;
+}
+
+.my-spot--pending {
+  border: 2px solid var(--cocos-blue);
+}
+
+.my-spot__pending {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cocos-icon-blue);
+}
+
+.sync-banner {
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+}
+
+.sync-banner--offline {
+  background: #fff3cd;
+  color: #664d03;
+}
+
+.sync-banner--pending {
+  background: #e8f4ff;
+  color: #004795;
 }
 
 /* ── Forms ── */

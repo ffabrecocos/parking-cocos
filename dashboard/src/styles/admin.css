@@ -1,0 +1,128 @@
+/* Admin dashboard — full-width layout and calmer actions */
+
+:root {
+  --bg-admin: #eef2f7;
+}
+
+.parking-header {
+  padding: calc(12px + env(safe-area-inset-top, 0px)) clamp(20px, 4vw, 48px) 28px;
+}
+
+.parking-body--admin {
+  max-width: none;
+  margin: 0;
+  flex: 1;
+  border-radius: 24px 24px 0 0;
+  padding: 24px clamp(20px, 4vw, 48px) calc(32px + env(safe-area-inset-bottom, 0px));
+}
+
+.admin-bar {
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.admin-bar__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-section {
+  margin-bottom: 28px;
+}
+
+.admin-section__title {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table-wrap {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 71, 149, 0.04);
+}
+
+.data-table {
+  min-width: 0;
+  font-size: 0.875rem;
+}
+
+.data-table th {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  padding: 14px 16px;
+  background: #f8fafc;
+}
+
+.data-table td {
+  padding: 14px 16px;
+}
+
+.data-table td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.row-actions {
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.action-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--cocos-navy);
+  transition: background 0.12s ease;
+}
+
+.action-link:hover {
+  background: #f0f6ff;
+}
+
+.action-link--muted {
+  color: var(--text-secondary);
+}
+
+.action-link--muted:hover {
+  background: #f2f2f7;
+  color: var(--text);
+}
+
+.btn--subtle {
+  background: #fff;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.btn--subtle:hover {
+  background: #f8fafc;
+  color: var(--text);
+}
+
+.panel {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
+.seg-control {
+  margin-bottom: 0;
+}
+
+@media (min-width: 900px) {
+  .parking-body--admin {
+    border-radius: 20px 20px 0 0;
+  }
+}

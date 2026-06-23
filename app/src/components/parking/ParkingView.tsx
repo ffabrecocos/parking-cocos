@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { claimSpot, releaseSpot, signOut } from "@/app/actions/parking";
+import { signOut } from "@/app/actions/parking";
+import { useParkingOffline } from "@/hooks/useParkingOffline";
 import type { Profile, SpotWithOccupancy } from "@/types/database";
 import { ConfirmSheet } from "@/components/parking/ConfirmSheet";
 
@@ -38,6 +39,16 @@ export function ParkingView({ userId, profile, spots: initialSpots, mySpot: init
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
+  const {
+    isOnline,
+    isSyncing,
+    hasPending,
+    syncError,
+    displaySpots,
+    displayMySpot,
+    queueAction,
+  } = useParkingOffline({ userId, profile, spots, mySpot });
+
   const refresh = useCallback(() => router.refresh(), [router]);
 
   useEffect(() => {
@@ -66,23 +77,26 @@ export function ParkingView({ userId, profile, spots: initialSpots, mySpot: init
     };
   }, [refresh]);
 
-  const floors = [...new Set(spots.map((s) => s.floor))].sort((a, b) => a - b);
+  const floors = [...new Set(displaySpots.map((s) => s.floor))].sort((a, b) => a - b);
+  const visibleError = error ?? syncError;
 
   function handleConfirm() {
     if (!sheet) return;
     setError(null);
     startTransition(async () => {
-      const result =
-        sheet.type === "claim"
-          ? await claimSpot(sheet.spot.id)
-          : await releaseSpot(sheet.spot.id);
+      const result = await queueAction(sheet.type, sheet.spot.id);
 
-      if (result.error) {
-        setError(result.error);
+      if (result.offline) {
+        setSheet(null);
         return;
       }
+
+      if (result.failure) {
+        setError(result.failure.message);
+        return;
+      }
+
       setSheet(null);
-      refresh();
     });
   }
 
@@ -115,8 +129,24 @@ export function ParkingView({ userId, profile, spots: initialSpots, mySpot: init
       </header>
 
       <main className="parking-body">
-        {mySpot ? (
-          <section className="my-spot" aria-label="Tu cochera actual">
+        {!isOnline && (
+          <div className="sync-banner sync-banner--offline" role="status">
+            Sin señal. Tu cochera se guarda en el teléfono y se sincroniza cuando vuelva internet.
+          </div>
+        )}
+        {isOnline && hasPending && (
+          <div className="sync-banner sync-banner--pending" role="status">
+            {isSyncing
+              ? "Sincronizando tu cochera…"
+              : "Cochera pendiente de sincronizar. Reintentando automáticamente."}
+          </div>
+        )}
+
+        {displayMySpot ? (
+          <section
+            className={`my-spot${hasPending ? " my-spot--pending" : ""}`}
+            aria-label="Tu cochera actual"
+          >
             <div className="my-spot__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 17h14v-5H5v5zM7 11l2-4h6l2 4" />
@@ -127,9 +157,10 @@ export function ParkingView({ userId, profile, spots: initialSpots, mySpot: init
             <div>
               <div className="my-spot__label">Tu cochera</div>
               <div className="my-spot__value">
-                Piso {mySpot.floor} · N° {mySpot.spot_number}
+                Piso {displayMySpot.floor} · N° {displayMySpot.spot_number}
               </div>
               <div className="my-spot__plate">{primaryPlate(profile)}</div>
+              {hasPending && <div className="my-spot__pending">Pendiente de sincronizar</div>}
             </div>
           </section>
         ) : (
@@ -147,12 +178,14 @@ export function ParkingView({ userId, profile, spots: initialSpots, mySpot: init
           </section>
         )}
 
-        {error && (
-          <p style={{ color: "var(--danger)", fontSize: "0.875rem", marginBottom: 12 }}>{error}</p>
+        {visibleError && (
+          <p style={{ color: "var(--danger)", fontSize: "0.875rem", marginBottom: 12 }}>
+            {visibleError}
+          </p>
         )}
 
         {floors.map((floor) => {
-          const floorSpots = spots.filter((s) => s.floor === floor);
+          const floorSpots = displaySpots.filter((s) => s.floor === floor);
           const freeCount = floorSpots.filter((s) => !s.active_occupancy).length;
 
           return (

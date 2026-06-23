@@ -115,10 +115,17 @@ export function AdminSpotsClient({ initialSpots }: { initialSpots: AdminSpotRow[
   return (
     <>
       <div className="admin-bar">
-        <button type="button" className="btn btn--cocos btn--sm" onClick={startCreate}>
-          + Nueva cochera
-        </button>
-        <button type="button" className="btn btn--danger btn--sm" onClick={handleResetDay} disabled={pending}>
+        <div className="admin-bar__group">
+          <button type="button" className="btn btn--cocos btn--sm" onClick={startCreate}>
+            + Nueva cochera
+          </button>
+        </div>
+        <button
+          type="button"
+          className="btn btn--subtle btn--sm"
+          onClick={handleResetDay}
+          disabled={pending}
+        >
           Reset día
         </button>
       </div>
@@ -154,10 +161,8 @@ export function AdminSpotsClient({ initialSpots }: { initialSpots: AdminSpotRow[
       {floors.map((floorNum) => {
         const floorSpots = spots.filter((s) => s.floor === floorNum);
         return (
-          <section key={floorNum} style={{ marginBottom: 24 }}>
-            <h2 className="floor-section__title" style={{ marginBottom: 10 }}>
-              Piso {floorNum}
-            </h2>
+          <section key={floorNum} className="admin-section">
+            <h2 className="admin-section__title">Piso {floorNum}</h2>
             <div className="data-table-wrap">
               <table className="data-table">
                 <thead>
@@ -198,7 +203,7 @@ export function AdminSpotsClient({ initialSpots }: { initialSpots: AdminSpotRow[
                             {!occ && (
                               <button
                                 type="button"
-                                className="action-link action-link--danger"
+                                className="action-link action-link--muted"
                                 onClick={() => handleDelete(spot.id)}
                               >
                                 Eliminar
