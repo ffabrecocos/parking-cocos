@@ -4,7 +4,7 @@
 .parking-header {
   background: var(--cocos-navy);
   color: #fff;
-  padding: calc(12px + env(safe-area-inset-top, 0px)) 20px 32px;
+  padding: 12px 20px 32px;
   flex-shrink: 0;
 }
 
@@ -92,7 +92,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: calc(48px + env(safe-area-inset-top, 0px)) 32px 32px;
+  padding: 48px 32px 32px;
   text-align: center;
   color: #fff;
 }

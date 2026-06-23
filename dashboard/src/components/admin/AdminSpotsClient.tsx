@@ -114,19 +114,17 @@ export function AdminSpotsClient({ initialSpots }: { initialSpots: AdminSpotRow[
 
   return (
     <>
-      <div className="admin-bar">
-        <div className="admin-bar__group">
-          <button type="button" className="btn btn--cocos btn--sm" onClick={startCreate}>
-            + Nueva cochera
-          </button>
-        </div>
+      <div className="admin-toolbar">
         <button
           type="button"
-          className="btn btn--subtle btn--sm"
+          className="btn btn--cocos admin-toolbar__cta"
           onClick={handleResetDay}
           disabled={pending}
         >
-          Reset día
+          Reset del día
+        </button>
+        <button type="button" className="btn btn--text btn--sm" onClick={startCreate}>
+          + Nueva cochera
         </button>
       </div>
 
@@ -158,6 +156,7 @@ export function AdminSpotsClient({ initialSpots }: { initialSpots: AdminSpotRow[
         </div>
       )}
 
+      <div className="admin-sections-grid">
       {floors.map((floorNum) => {
         const floorSpots = spots.filter((s) => s.floor === floorNum);
         return (
@@ -193,21 +192,35 @@ export function AdminSpotsClient({ initialSpots }: { initialSpots: AdminSpotRow[
                         <td>
                           <div className="row-actions">
                             {occ && (
-                              <button type="button" className="action-link" onClick={() => handleRelease(spot.id)}>
-                                Liberar
-                              </button>
+                              <>
+                                <button
+                                  type="button"
+                                  className="action-link"
+                                  onClick={() => handleRelease(spot.id)}
+                                >
+                                  Liberar
+                                </button>
+                                <span className="row-actions__sep" aria-hidden>
+                                  ·
+                                </span>
+                              </>
                             )}
                             <button type="button" className="action-link" onClick={() => startEdit(spot)}>
                               Editar
                             </button>
                             {!occ && (
-                              <button
-                                type="button"
-                                className="action-link action-link--muted"
-                                onClick={() => handleDelete(spot.id)}
-                              >
-                                Eliminar
-                              </button>
+                              <>
+                                <span className="row-actions__sep" aria-hidden>
+                                  ·
+                                </span>
+                                <button
+                                  type="button"
+                                  className="action-link action-link--muted"
+                                  onClick={() => handleDelete(spot.id)}
+                                >
+                                  Eliminar
+                                </button>
+                              </>
                             )}
                           </div>
                         </td>
@@ -220,6 +233,7 @@ export function AdminSpotsClient({ initialSpots }: { initialSpots: AdminSpotRow[
           </section>
         );
       })}
+      </div>
     </>
   );
 }

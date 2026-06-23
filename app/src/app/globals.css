@@ -7,9 +7,32 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  background: var(--cocos-navy);
+}
+
 body {
   background: var(--bg-app);
   min-height: 100dvh;
+}
+
+/* Dedicated spacer — more reliable than padding alone on iOS standalone PWA */
+.app::before {
+  content: "";
+  display: block;
+  flex-shrink: 0;
+  width: 100%;
+  background: var(--cocos-navy);
+  height: constant(safe-area-inset-top);
+  height: env(safe-area-inset-top, 0px);
+}
+
+@supports (-webkit-touch-callout: none) {
+  @media (display-mode: standalone) {
+    .app::before {
+      height: max(env(safe-area-inset-top, 0px), 44px);
+    }
+  }
 }
 
 .app {

@@ -3,9 +3,9 @@ import { OAuthCallbackHandler } from "@/components/auth/OAuthCallbackHandler";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Cocos Parking",
+  title: "Parking Cocos",
+  applicationName: "Parking Cocos",
   description: "Reservá tu cochera en la oficina",
-  manifest: "/manifest.webmanifest",
   icons: {
     icon: [
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    title: "Parking Cocos",
+    title: "ParkingCocos",
     statusBarStyle: "black-translucent",
   },
 };
