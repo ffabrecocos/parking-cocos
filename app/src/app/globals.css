@@ -16,23 +16,19 @@ body {
   min-height: 100dvh;
 }
 
-/* Dedicated spacer — more reliable than padding alone on iOS standalone PWA */
-.app::before {
-  content: "";
+/*
+ * Backup safe-area strip (real DOM node in layout).
+ * With statusBarStyle "black", iOS usually lays out below the status bar
+ * and this stays at 0. Kept for env() when it is non-zero.
+ */
+.safe-area-top {
+  background: var(--cocos-navy);
   display: block;
   flex-shrink: 0;
-  width: 100%;
-  background: var(--cocos-navy);
   height: constant(safe-area-inset-top);
   height: env(safe-area-inset-top, 0px);
-}
-
-@supports (-webkit-touch-callout: none) {
-  @media (display-mode: standalone) {
-    .app::before {
-      height: max(env(safe-area-inset-top, 0px), 44px);
-    }
-  }
+  pointer-events: none;
+  width: 100%;
 }
 
 .app {

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { OAuthCallbackHandler } from "@/components/auth/OAuthCallbackHandler";
+import { SafeAreaTop } from "@/components/layout/SafeAreaTop";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: "ParkingCocos",
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "black",
   },
 };
 
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
+        <SafeAreaTop />
         <OAuthCallbackHandler />
         {children}
       </body>
