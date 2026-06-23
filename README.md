@@ -42,7 +42,7 @@ project_id = "my-project"  # ← change to your project name
 
 ### 4. Create a Supabase project
 
-Go to [supabase.com/dashboard](https://supabase.com/dashboard) and create a new project. Note down the **Project URL** and **anon key**.
+Go to [supabase.com/dashboard](https://supabase.com/dashboard) and create a new project. Note down the **Project URL** and **publishable key**.
 
 ### 5. Set up environment variables
 
@@ -56,7 +56,7 @@ Edit `dashboard/.env.local`:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
 ```
 
 For local development with `supabase start`, the values are printed in the terminal output.
