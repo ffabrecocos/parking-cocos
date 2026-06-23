@@ -39,6 +39,9 @@ async function loadParkingData(userId: string) {
             user_id: occ.user_id,
             occupied_at: occ.occupied_at,
             released_at: occ.released_at,
+            marked_by_admin: occ.marked_by_admin ?? false,
+            display_name: occ.display_name,
+            display_plate: occ.display_plate,
             profile: (occ.profile as Profile | null) ?? null,
           }
         : null,

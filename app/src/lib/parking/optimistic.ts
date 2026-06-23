@@ -32,6 +32,9 @@ export function applyQueuedActions(
                 user_id: userId,
                 occupied_at: action.createdAt,
                 released_at: null,
+                marked_by_admin: false,
+                display_name: null,
+                display_plate: null,
                 profile,
               },
             }

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/app/actions/parking";
+import { occupancyDisplayName, occupancyDisplayPlate } from "@/lib/parking/occupancy-display";
 import { useParkingOffline } from "@/hooks/useParkingOffline";
 import type { Profile, SpotWithOccupancy } from "@/types/database";
 import { ConfirmSheet } from "@/components/parking/ConfirmSheet";
@@ -199,7 +200,7 @@ export function ParkingView({ userId, profile, spots: initialSpots, mySpot: init
               <div className="spot-list">
                 {floorSpots.map((spot) => {
                   const occ = spot.active_occupancy;
-                  const isMine = occ?.user_id === userId;
+                  const isMine = !!occ?.user_id && occ.user_id === userId;
                   const isFree = !occ;
                   const isOccupied = !!occ && !isMine;
 
@@ -239,8 +240,9 @@ export function ParkingView({ userId, profile, spots: initialSpots, mySpot: init
                       <SpotCardContent
                         spot={spot}
                         status="occupied"
-                        name={occ?.profile?.full_name ?? "Ocupada"}
-                        plate={primaryPlate(occ?.profile ?? null)}
+                        name={occupancyDisplayName(occ!)}
+                        plate={occupancyDisplayPlate(occ!)}
+                        adminMarked={occ!.marked_by_admin}
                       />
                     </article>
                   );
@@ -290,11 +292,13 @@ function SpotCardContent({
   status,
   name,
   plate,
+  adminMarked,
 }: {
   spot: SpotWithOccupancy;
   status: "free" | "occupied" | "mine";
   name?: string | null;
   plate?: string;
+  adminMarked?: boolean;
 }) {
   return (
     <>
@@ -308,7 +312,9 @@ function SpotCardContent({
         )}
         {status === "occupied" && (
           <>
-            <div className="spot-card__status spot-card__status--taken">Ocupada</div>
+            <div className="spot-card__status spot-card__status--taken">
+              {adminMarked ? "Ocupada (admin)" : "Ocupada"}
+            </div>
             <div className="spot-card__name">{name}</div>
             <div className="spot-card__plate">{plate}</div>
           </>

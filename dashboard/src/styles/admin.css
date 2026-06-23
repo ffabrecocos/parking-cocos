@@ -173,6 +173,39 @@
   margin-bottom: 20px;
 }
 
+.panel__section {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.panel__subtitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.panel__hint {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.panel .field select {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.875rem;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.tag--admin {
+  background: #ede9fe;
+  color: #5b4fc7;
+}
+
 .seg-control {
   margin-bottom: 0;
 }

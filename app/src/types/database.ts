@@ -18,9 +18,12 @@ export type ParkingSpot = {
 export type Occupancy = {
   id: string;
   spot_id: string;
-  user_id: string;
+  user_id: string | null;
   occupied_at: string;
   released_at: string | null;
+  marked_by_admin: boolean;
+  display_name: string | null;
+  display_plate: string | null;
 };
 
 export type SpotWithOccupancy = ParkingSpot & {

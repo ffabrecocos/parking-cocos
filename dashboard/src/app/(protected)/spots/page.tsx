@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { AdminSpotsClient } from "@/components/admin/AdminSpotsClient";
-import type { AdminSpotRow, Profile } from "@/types/database";
+import type { AdminSpotRow, AdminSpotUserOption, Profile } from "@/types/database";
 
 async function loadSpots() {
   const supabase = await createClient();
@@ -27,6 +27,9 @@ async function loadSpots() {
             user_id: occ.user_id,
             occupied_at: occ.occupied_at,
             released_at: occ.released_at,
+            marked_by_admin: occ.marked_by_admin ?? false,
+            display_name: occ.display_name,
+            display_plate: occ.display_plate,
             profile: (occ.profile as Profile | null) ?? null,
           }
         : null,
@@ -34,7 +37,22 @@ async function loadSpots() {
   });
 }
 
+async function loadUsers(): Promise<AdminSpotUserOption[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("profiles")
+    .select("id, full_name, email, license_plates")
+    .order("full_name");
+
+  return (data ?? []).map((u) => ({
+    id: u.id,
+    full_name: u.full_name,
+    email: u.email,
+    license_plates: u.license_plates ?? [],
+  }));
+}
+
 export default async function SpotsPage() {
-  const spots = await loadSpots();
-  return <AdminSpotsClient initialSpots={spots} />;
+  const [spots, users] = await Promise.all([loadSpots(), loadUsers()]);
+  return <AdminSpotsClient initialSpots={spots} users={users} />;
 }
