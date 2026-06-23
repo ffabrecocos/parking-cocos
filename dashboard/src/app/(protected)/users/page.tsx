@@ -2,6 +2,18 @@ import { createClient } from "@/lib/supabase/server";
 import { AdminUsersClient } from "@/components/admin/AdminUsersClient";
 import type { AdminUserRow } from "@/types/database";
 
+type SpotSummary = { floor: number; spot_number: number };
+
+function parseSpotRelation(spot: unknown): SpotSummary | null {
+  if (!spot || typeof spot !== "object") return null;
+  if (Array.isArray(spot)) {
+    const first = spot[0];
+    if (!first || typeof first !== "object") return null;
+    return first as SpotSummary;
+  }
+  return spot as SpotSummary;
+}
+
 async function loadUsers() {
   const supabase = await createClient();
 
@@ -17,11 +29,10 @@ async function loadUsers() {
 
   return (profiles ?? []).map((profile) => {
     const occ = occupancies?.find((o) => o.user_id === profile.id);
-    const spot = occ?.spot as { floor: number; spot_number: number } | null;
     return {
       ...profile,
       email: profile.email ?? null,
-      active_spot: spot ?? null,
+      active_spot: parseSpotRelation(occ?.spot),
     } satisfies AdminUserRow;
   });
 }
