@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { OnboardingForm } from "@/components/onboarding/OnboardingForm";
+import { nameFromGoogleMetadata, profileNeedsOnboarding } from "@/lib/auth/google-name";
 
 export default async function OnboardingPage() {
   if (!isSupabaseConfigured()) {
@@ -22,9 +23,14 @@ export default async function OnboardingPage() {
     .eq("id", user.id)
     .single();
 
-  if (profile?.full_name?.trim()) {
+  if (!profileNeedsOnboarding(profile)) {
     redirect("/");
   }
+
+  const suggestedName =
+    profile?.full_name?.trim() ||
+    nameFromGoogleMetadata(user.user_metadata) ||
+    "";
 
   return (
     <div className="app">
@@ -55,7 +61,7 @@ export default async function OnboardingPage() {
           </p>
         </div>
         <OnboardingForm
-          initialName={profile?.full_name ?? ""}
+          initialName={suggestedName}
           initialPlates={profile?.license_plates ?? []}
         />
       </main>

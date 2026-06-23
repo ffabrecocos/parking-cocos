@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { ParkingView } from "@/components/parking/ParkingView";
+import { profileNeedsOnboarding } from "@/lib/auth/google-name";
 import type { Profile, SpotWithOccupancy } from "@/types/database";
 
 async function loadParkingData(userId: string) {
@@ -12,7 +13,7 @@ async function loadParkingData(userId: string) {
     .eq("id", userId)
     .single();
 
-  if (!profile?.full_name?.trim()) {
+  if (profileNeedsOnboarding(profile)) {
     return { redirect: "/onboarding" as const };
   }
 
