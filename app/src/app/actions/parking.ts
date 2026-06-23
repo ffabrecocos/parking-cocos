@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { friendlyError } from "@/lib/errors";
 
 export async function claimSpot(spotId: string) {
   const supabase = await createClient();
@@ -19,7 +20,7 @@ export async function claimSpot(spotId: string) {
   });
 
   if (error) {
-    return { error: error.message };
+    return { error: friendlyError("No pudimos reservar la cochera. Intentá de nuevo.", error) };
   }
 
   revalidatePath("/");
@@ -49,11 +50,11 @@ export async function releaseSpot(spotId?: string) {
   const { data, error } = await query.select("id");
 
   if (error) {
-    return { error: error.message };
+    return { error: friendlyError("No pudimos liberar la cochera. Intentá de nuevo.", error) };
   }
 
   if (!data?.length) {
-    return { error: "No active spot to release" };
+    return { error: "No tenés una cochera activa para liberar." };
   }
 
   revalidatePath("/");

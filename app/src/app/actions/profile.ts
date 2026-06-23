@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { friendlyError } from "@/lib/errors";
 
 export async function updateProfile(fullName: string, licensePlates: string[]) {
   const supabase = await createClient();
@@ -32,7 +33,7 @@ export async function updateProfile(fullName: string, licensePlates: string[]) {
     .eq("id", user.id);
 
   if (error) {
-    return { error: error.message };
+    return { error: friendlyError("No pudimos guardar tu perfil. Intentá de nuevo.", error) };
   }
 
   revalidatePath("/");

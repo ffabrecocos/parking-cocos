@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { friendlyError } from "@/lib/errors";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -30,12 +31,12 @@ export async function adminReleaseSpot(spotId: string) {
       .is("released_at", null)
       .select("id");
 
-    if (error) return { error: error.message };
+    if (error) return { error: friendlyError("No pudimos liberar la cochera.", error) };
     if (!data?.length) return { error: "La cochera no está ocupada" };
     revalidatePath("/spots");
     return { success: true };
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Error" };
+    return { error: e instanceof Error ? e.message : friendlyError() };
   }
 }
 
@@ -48,11 +49,11 @@ export async function resetDay() {
       .is("released_at", null)
       .select("id");
 
-    if (error) return { error: error.message };
+    if (error) return { error: friendlyError("No pudimos reiniciar el día.", error) };
     revalidatePath("/spots");
     return { success: true, released: data?.length ?? 0 };
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Error" };
+    return { error: e instanceof Error ? e.message : friendlyError() };
   }
 }
 
@@ -67,16 +68,16 @@ export async function upsertSpot(input: {
 
     if (input.id) {
       const { error } = await supabase.from("parking_spots").update(payload).eq("id", input.id);
-      if (error) return { error: error.message };
+      if (error) return { error: friendlyError("No pudimos guardar la cochera.", error) };
     } else {
       const { error } = await supabase.from("parking_spots").insert(payload);
-      if (error) return { error: error.message };
+      if (error) return { error: friendlyError("No pudimos crear la cochera.", error) };
     }
 
     revalidatePath("/spots");
     return { success: true };
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Error" };
+    return { error: e instanceof Error ? e.message : friendlyError() };
   }
 }
 
@@ -96,11 +97,11 @@ export async function deleteSpot(spotId: string) {
     }
 
     const { error } = await supabase.from("parking_spots").delete().eq("id", spotId);
-    if (error) return { error: error.message };
+    if (error) return { error: friendlyError("No pudimos eliminar la cochera.", error) };
     revalidatePath("/spots");
     return { success: true };
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Error" };
+    return { error: e instanceof Error ? e.message : friendlyError() };
   }
 }
 
@@ -122,12 +123,12 @@ export async function updateUserProfile(
       .update({ full_name: trimmedName, license_plates: plates })
       .eq("id", userId);
 
-    if (error) return { error: error.message };
+    if (error) return { error: friendlyError("No pudimos actualizar el usuario.", error) };
     revalidatePath("/users");
     revalidatePath("/spots");
     return { success: true };
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Error" };
+    return { error: e instanceof Error ? e.message : friendlyError() };
   }
 }
 
