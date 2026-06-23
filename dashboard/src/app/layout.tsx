@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { OAuthCallbackHandler } from "@/components/auth/OAuthCallbackHandler";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <OAuthCallbackHandler />
+        {children}
+      </body>
     </html>
   );
 }
