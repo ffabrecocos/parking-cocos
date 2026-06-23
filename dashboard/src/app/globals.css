@@ -8,7 +8,7 @@ body {
 }
 
 body {
-  background: linear-gradient(160deg, #dce6f0 0%, #eef2f6 50%, #e4eaf0 100%);
+  background: var(--bg-app);
   min-height: 100dvh;
 }
 
@@ -25,26 +25,5 @@ body {
 }
 
 .app--login {
-  max-width: 480px;
-  margin: 24px auto;
-  min-height: calc(100dvh - 48px);
-  border-radius: 44px;
-  overflow: hidden;
-  box-shadow:
-    0 0 0 10px #1a1a1a,
-    0 0 0 12px #3a3a3c,
-    0 32px 80px rgba(0, 0, 0, 0.28);
-}
-
-@media (max-width: 520px) {
-  .app--login {
-    margin: 0;
-    min-height: 100dvh;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  body {
-    background: var(--bg-app);
-  }
+  min-height: 100dvh;
 }

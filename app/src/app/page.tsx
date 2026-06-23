@@ -54,7 +54,19 @@ async function loadParkingData(userId: string) {
   };
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ code?: string }>;
+}) {
+  const params = await searchParams;
+
+  if (params.code) {
+    redirect(
+      `/auth/callback?code=${encodeURIComponent(params.code)}&next=${encodeURIComponent("/")}`
+    );
+  }
+
   if (!isSupabaseConfigured()) {
     redirect("/login");
   }

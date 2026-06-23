@@ -7,38 +7,18 @@ body {
   overflow-x: hidden;
 }
 
-@media (min-width: 421px) {
-  body {
-    background: linear-gradient(160deg, #dce6f0 0%, #eef2f6 50%, #e4eaf0 100%);
-  }
-}
-
-@media (max-width: 420px) {
-  body {
-    background: var(--bg-app);
-  }
-}
-
-.app {
-  max-width: 480px;
-  margin: 0 auto;
+body {
+  background: var(--bg-app);
   min-height: 100dvh;
 }
 
-@media (min-width: 421px) {
-  .app {
-    margin-top: 24px;
-    margin-bottom: 24px;
-    min-height: calc(100dvh - 48px);
-    border-radius: 44px;
-    overflow: hidden;
-    box-shadow:
-      0 0 0 10px #1a1a1a,
-      0 0 0 12px #3a3a3c,
-      0 32px 80px rgba(0, 0, 0, 0.28);
-  }
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 
-  .app--login {
-    border-radius: 44px;
-  }
+.app--login {
+  min-height: 100dvh;
 }

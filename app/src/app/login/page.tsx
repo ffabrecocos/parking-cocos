@@ -5,9 +5,15 @@ import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; code?: string }>;
 }) {
   const params = await searchParams;
+
+  if (params.code) {
+    redirect(
+      `/auth/callback?code=${encodeURIComponent(params.code)}&next=${encodeURIComponent("/")}`
+    );
+  }
 
   if (isSupabaseConfigured()) {
     const supabase = await createClient();
