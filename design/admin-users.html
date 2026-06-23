@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#004795" />
+    <title>Cocos Parking — Admin Usuarios</title>
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="parking-ui.css" />
+  </head>
+  <body>
+    <div class="device-stage">
+      <div class="device-frame device-frame--wide">
+        <div class="app">
+          <header class="parking-header">
+            <div class="parking-header__bar">
+              <div class="avatar">AD</div>
+              <div class="parking-header__logo-wrap">
+                <img src="cocos-logo.png" alt="Cocos" class="parking-header__logo" />
+              </div>
+              <a href="index.html" class="icon-btn" aria-label="Volver">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </a>
+            </div>
+            <h1 class="parking-header__heading">Administración</h1>
+            <p class="parking-header__sub">Gestioná usuarios y permisos</p>
+          </header>
+
+          <main class="parking-body parking-body--admin">
+            <nav class="seg-control">
+              <a href="admin-parking.html">Cocheras</a>
+              <a href="admin-users.html" class="active">Usuarios</a>
+            </nav>
+
+            <p class="admin-summary"><strong>24</strong> usuarios · <strong>4</strong> con cochera ahora</p>
+
+            <div class="admin-list-wrap">
+              <table class="admin-list">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Patentes</th>
+                    <th>Cochera</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="admin-list__name">Gonza G</span></td>
+                    <td class="admin-list__muted">gonza@cocos.capital</td>
+                    <td>IOY468</td>
+                    <td>Piso 1 · 8</td>
+                    <td class="admin-list__actions">
+                      <button type="button" class="link-btn">Editar</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="admin-list__name">Gian</span></td>
+                    <td class="admin-list__muted">gian@cocos.capital</td>
+                    <td>AF539EU</td>
+                    <td>Piso 1 · 16</td>
+                    <td class="admin-list__actions">
+                      <button type="button" class="link-btn">Editar</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="admin-list__name">Valentin</span></td>
+                    <td class="admin-list__muted">valentin@cocos.capital</td>
+                    <td>AC581HI / KBD149</td>
+                    <td>Piso 1 · 17</td>
+                    <td class="admin-list__actions">
+                      <button type="button" class="link-btn">Editar</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="admin-list__name">Admin User</span></td>
+                    <td class="admin-list__muted">admin@cocos.capital</td>
+                    <td>XYZ999</td>
+                    <td class="admin-list__muted">—</td>
+                    <td class="admin-list__actions">
+                      <button type="button" class="link-btn">Editar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="ui-panel">
+              <div class="ui-panel__title">Editar usuario — Gonza G</div>
+              <div class="field">
+                <label>Nombre completo</label>
+                <input type="text" value="Gonza G" />
+              </div>
+              <div class="field">
+                <label>Patentes</label>
+                <input type="text" value="IOY468" placeholder="Separar con / para varias" />
+                <p class="field__hint">Ej: AC581HI/KBD149</p>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="btn btn--cocos btn--sm">Guardar</button>
+                <button type="button" class="btn btn--ghost btn--sm">Cancelar</button>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

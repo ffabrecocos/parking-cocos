@@ -1,0 +1,27 @@
+---
+description: Load Cocos Parking project context from context/parking-roadmap.md before any work
+alwaysApply: true
+---
+
+# Cocos Parking — read project context first
+
+At the **start of every session** (or when context is unclear), read:
+
+**[context/parking-roadmap.md](context/parking-roadmap.md)**
+
+That file is the single source of truth for product scope, approved designs, decisions, data model, and implementation order.
+
+## Quick reference
+
+- **Employee app** → `app/` (:3000), PWA, card-based cocheras UI — mockups in `design/app-*.html`
+- **Admin dashboard** → `dashboard/` (:3001), table-based lists — `design/admin-*.html`
+- **Styles to port** → `design/parking-ui.css` + tokens in the roadmap
+- **Backend** → Supabase; migrations in `supabase/migrations/`
+- **Designs are approved** — implement from HTML mockups; do not redesign without asking
+- **`is_admin`** → set only in Supabase, never in app UI
+
+## When implementing
+
+1. Match approved HTML in `design/` (employee = cards, admin = tables).
+2. Follow the implementation order in the roadmap.
+3. After shipping milestones or changing decisions, update `context/parking-roadmap.md`.

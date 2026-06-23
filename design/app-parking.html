@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#004795" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Cocos Parking — Cocheras</title>
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="parking-ui.css" />
+  </head>
+  <body>
+    <div class="device-stage">
+      <div class="device-frame">
+        <div class="device-notch"></div>
+        <div class="app">
+          <header class="parking-header">
+            <div class="parking-header__bar">
+              <div class="avatar">YO</div>
+              <div class="parking-header__logo-wrap">
+                <img src="cocos-logo.png" alt="Cocos" class="parking-header__logo" />
+              </div>
+              <button type="button" class="icon-btn" aria-label="Actualizar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+              </button>
+            </div>
+            <h1 class="parking-header__heading">Cocheras</h1>
+            <p class="parking-header__sub">Elegí tu lugar al llegar</p>
+          </header>
+
+          <main class="parking-body">
+            <section class="my-spot" aria-label="Tu cochera actual">
+              <div class="my-spot__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 17h14v-5H5v5zM7 11l2-4h6l2 4"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg>
+              </div>
+              <div>
+                <div class="my-spot__label">Tu cochera</div>
+                <div class="my-spot__value">Piso 2 · N° 44</div>
+                <div class="my-spot__plate">ABC123</div>
+              </div>
+            </section>
+
+            <!-- Piso 1 -->
+            <section class="floor-section">
+              <div class="floor-section__head">
+                <h2 class="floor-section__title">Piso 1</h2>
+                <span class="floor-section__count">3 libres</span>
+              </div>
+              <div class="spot-list">
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">8</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Gonza G</div>
+                    <div class="spot-card__plate">IOY468</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <button type="button" class="spot-card spot-card--free" data-action="claim" data-spot="Piso 1 · N° 9">
+                  <div class="spot-card__num">9</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--free">Disponible</div>
+                    <div class="spot-card__empty">Tocá para ocupar</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--free"></div>
+                </button>
+
+                <button type="button" class="spot-card spot-card--free" data-action="claim" data-spot="Piso 1 · N° 10">
+                  <div class="spot-card__num">10</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--free">Disponible</div>
+                    <div class="spot-card__empty">Tocá para ocupar</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--free"></div>
+                </button>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">16</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Gian</div>
+                    <div class="spot-card__plate">AF539EU</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">17</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Valentin</div>
+                    <div class="spot-card__plate">AC581HI · KBD149</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">18</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Juani G</div>
+                    <div class="spot-card__plate">KPF419</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">20</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Martin D</div>
+                    <div class="spot-card__plate">AG683HY</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">32</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Juan</div>
+                    <div class="spot-card__plate">AD349BB</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <!-- Piso 2 -->
+            <section class="floor-section">
+              <div class="floor-section__head">
+                <h2 class="floor-section__title">Piso 2</h2>
+                <span class="floor-section__count">3 libres</span>
+              </div>
+              <div class="spot-list">
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">36</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Matias D</div>
+                    <div class="spot-card__plate">AE361D0</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">37</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Tomi B</div>
+                    <div class="spot-card__plate">AC697LP</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <button type="button" class="spot-card spot-card--free" data-action="claim" data-spot="Piso 2 · N° 38">
+                  <div class="spot-card__num">38</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--free">Disponible</div>
+                    <div class="spot-card__empty">Tocá para ocupar</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--free"></div>
+                </button>
+
+                <button type="button" class="spot-card spot-card--free" data-action="claim" data-spot="Piso 2 · N° 39">
+                  <div class="spot-card__num">39</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--free">Disponible</div>
+                    <div class="spot-card__empty">Tocá para ocupar</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--free"></div>
+                </button>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">40</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Juano</div>
+                    <div class="spot-card__plate">AH496BE</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <article class="spot-card spot-card--occupied">
+                  <div class="spot-card__num">41</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--taken">Ocupada</div>
+                    <div class="spot-card__name">Santi</div>
+                    <div class="spot-card__plate">AD894IQ</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </article>
+
+                <button type="button" class="spot-card spot-card--free" data-action="claim" data-spot="Piso 2 · N° 43">
+                  <div class="spot-card__num">43</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--free">Disponible</div>
+                    <div class="spot-card__empty">Tocá para ocupar</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--free"></div>
+                </button>
+
+                <button type="button" class="spot-card spot-card--mine" data-action="release" data-spot="Piso 2 · N° 44">
+                  <div class="spot-card__num">44</div>
+                  <div class="spot-card__body">
+                    <div class="spot-card__status spot-card__status--mine">Tu cochera</div>
+                    <div class="spot-card__name">Vos</div>
+                    <div class="spot-card__plate">ABC123</div>
+                    <div class="spot-card__hint">Tocá para liberar</div>
+                  </div>
+                  <div class="spot-card__indicator spot-card__indicator--mine spot-card__indicator--on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </button>
+              </div>
+            </section>
+
+            <p class="parking-hint">
+              Las cocheras libres se marcan en verde · La tuya resalta en azul
+            </p>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claim -->
+    <div class="modal-backdrop" id="claimModal">
+      <div class="modal-sheet">
+        <div class="modal-sheet__handle"></div>
+        <div class="modal-sheet__title">Ocupar cochera</div>
+        <div class="modal-sheet__body" id="claimText"></div>
+        <div class="modal-sheet__actions">
+          <button type="button" class="btn btn--cocos" id="claimConfirm">Confirmar</button>
+          <button type="button" class="btn btn--ghost modal-close" style="width:100%">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Release -->
+    <div class="modal-backdrop" id="releaseModal">
+      <div class="modal-sheet">
+        <div class="modal-sheet__handle"></div>
+        <div class="modal-sheet__title">Liberar cochera</div>
+        <div class="modal-sheet__body" id="releaseText"></div>
+        <div class="modal-sheet__actions">
+          <button type="button" class="btn btn--danger" id="releaseConfirm">Liberar</button>
+          <button type="button" class="btn btn--ghost modal-close" style="width:100%">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const claimModal = document.getElementById("claimModal");
+      const releaseModal = document.getElementById("releaseModal");
+      const claimText = document.getElementById("claimText");
+      const releaseText = document.getElementById("releaseText");
+
+      document.querySelectorAll('[data-action="claim"]').forEach((el) => {
+        el.addEventListener("click", () => {
+          claimText.innerHTML = `¿Querés ocupar <strong>${el.dataset.spot}</strong>?`;
+          claimModal.classList.add("open");
+        });
+      });
+
+      document.querySelectorAll('[data-action="release"]').forEach((el) => {
+        el.addEventListener("click", () => {
+          releaseText.innerHTML = `¿Querés liberar <strong>${el.dataset.spot}</strong>?`;
+          releaseModal.classList.add("open");
+        });
+      });
+
+      document.querySelectorAll(".modal-close").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          claimModal.classList.remove("open");
+          releaseModal.classList.remove("open");
+        });
+      });
+
+      document.getElementById("claimConfirm")?.addEventListener("click", () => {
+        claimModal.classList.remove("open");
+      });
+
+      document.getElementById("releaseConfirm")?.addEventListener("click", () => {
+        releaseModal.classList.remove("open");
+      });
+
+      [claimModal, releaseModal].forEach((modal) => {
+        modal?.addEventListener("click", (e) => {
+          if (e.target === modal) modal.classList.remove("open");
+        });
+      });
+    </script>
+  </body>
+</html>

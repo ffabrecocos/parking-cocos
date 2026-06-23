@@ -1,0 +1,18 @@
+{
+  "name": "Cocos Parking",
+  "short_name": "Parking",
+  "description": "Reservá tu cochera en la oficina",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#004795",
+  "theme_color": "#004795",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/cocos-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
