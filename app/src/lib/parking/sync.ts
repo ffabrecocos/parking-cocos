@@ -7,6 +7,8 @@ export type SyncResult =
   | { status: "conflict"; message: string }
   | { status: "error"; message: string };
 
+export type SyncFailure = Exclude<SyncResult, { status: "ok" }>;
+
 async function executeClaim(
   supabase: SupabaseClient,
   spotId: string,
@@ -52,7 +54,7 @@ async function executeRelease(
 export async function flushParkingQueue(
   supabase: SupabaseClient,
   userId: string
-): Promise<{ queue: PendingParkingAction[]; failure: SyncResult | null }> {
+): Promise<{ queue: PendingParkingAction[]; failure: SyncFailure | null }> {
   const queue = readQueue(userId);
   if (queue.length === 0) {
     return { queue, failure: null };
