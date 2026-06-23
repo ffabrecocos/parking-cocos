@@ -71,7 +71,7 @@ export default async function HomePage() {
   const data = await loadParkingData(user.id);
 
   if ("redirect" in data) {
-    redirect(data.redirect);
+    redirect("/onboarding");
   }
 
   return (
