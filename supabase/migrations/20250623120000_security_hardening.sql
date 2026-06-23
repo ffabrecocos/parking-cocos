@@ -1,5 +1,9 @@
--- Cocos Parking initial schema
+-- Security hardening: fix linter warnings
+-- - Immutable search_path on trigger helpers
+-- - Remove SECURITY DEFINER RPCs; enforce via RLS instead
+-- - Revoke EXECUTE on internal/trigger functions from API roles
 
+-- Trigger helpers: fixed search_path, not callable via PostgREST
 CREATE OR REPLACE FUNCTION public.set_updated_at()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -27,84 +31,24 @@ $$;
 REVOKE ALL ON FUNCTION public.set_updated_at() FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.protect_is_admin() FROM PUBLIC;
 
-CREATE TABLE public.profiles (
-  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  email text,
-  full_name text,
-  license_plates text[] NOT NULL DEFAULT '{}',
-  is_admin boolean NOT NULL DEFAULT false,
-  created_at timestamptz NOT NULL DEFAULT now(),
-  updated_at timestamptz NOT NULL DEFAULT now()
-);
-
-CREATE TABLE public.parking_spots (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  floor int NOT NULL CHECK (floor > 0),
-  spot_number int NOT NULL CHECK (spot_number > 0),
-  created_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (floor, spot_number)
-);
-
-CREATE TABLE public.occupancies (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  spot_id uuid NOT NULL REFERENCES public.parking_spots(id) ON DELETE CASCADE,
-  user_id uuid NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
-  occupied_at timestamptz NOT NULL DEFAULT now(),
-  released_at timestamptz
-);
-
-CREATE UNIQUE INDEX occupancies_one_active_per_spot
-  ON public.occupancies (spot_id)
-  WHERE released_at IS NULL;
-
-CREATE UNIQUE INDEX occupancies_one_active_per_user
-  ON public.occupancies (user_id)
-  WHERE released_at IS NULL;
-
-CREATE INDEX occupancies_active_spot_idx ON public.occupancies (spot_id) WHERE released_at IS NULL;
-CREATE INDEX occupancies_active_user_idx ON public.occupancies (user_id) WHERE released_at IS NULL;
-
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-BEGIN
-  INSERT INTO public.profiles (id, email, full_name)
-  VALUES (
-    NEW.id,
-    NEW.email,
-    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name')
-  );
-  RETURN NEW;
-END;
-$$;
-
+-- Auth signup trigger: not an RPC
 REVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.handle_new_user() FROM anon, authenticated;
 
-CREATE TRIGGER profiles_updated_at
-  BEFORE UPDATE ON public.profiles
-  FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
+-- Supabase "automatic RLS" helper (if enabled on project)
+DO $$
+BEGIN
+  IF to_regprocedure('public.rls_auto_enable()') IS NOT NULL THEN
+    REVOKE ALL ON FUNCTION public.rls_auto_enable() FROM PUBLIC;
+    REVOKE ALL ON FUNCTION public.rls_auto_enable() FROM anon, authenticated;
+  END IF;
+END $$;
 
-CREATE TRIGGER profiles_protect_is_admin
-  BEFORE UPDATE ON public.profiles
-  FOR EACH ROW EXECUTE FUNCTION public.protect_is_admin();
-
-CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.parking_spots ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.occupancies ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY profiles_select ON public.profiles
-  FOR SELECT TO authenticated USING (true);
-
-CREATE POLICY profiles_insert_own ON public.profiles
-  FOR INSERT TO authenticated WITH CHECK (auth.uid() = id);
+-- Replace policies that referenced is_admin()
+DROP POLICY IF EXISTS profiles_update_own ON public.profiles;
+DROP POLICY IF EXISTS spots_insert_admin ON public.parking_spots;
+DROP POLICY IF EXISTS spots_update_admin ON public.parking_spots;
+DROP POLICY IF EXISTS spots_delete_admin ON public.parking_spots;
 
 CREATE POLICY profiles_update_own ON public.profiles
   FOR UPDATE TO authenticated
@@ -122,9 +66,6 @@ CREATE POLICY profiles_update_own ON public.profiles
       WHERE p.id = auth.uid() AND p.is_admin = true
     )
   );
-
-CREATE POLICY spots_select ON public.parking_spots
-  FOR SELECT TO authenticated USING (true);
 
 CREATE POLICY spots_insert_admin ON public.parking_spots
   FOR INSERT TO authenticated
@@ -159,9 +100,7 @@ CREATE POLICY spots_delete_admin ON public.parking_spots
     )
   );
 
-CREATE POLICY occupancies_select ON public.occupancies
-  FOR SELECT TO authenticated USING (true);
-
+-- Occupancy mutations via RLS (replaces SECURITY DEFINER RPCs)
 CREATE POLICY occupancies_insert_claim ON public.occupancies
   FOR INSERT TO authenticated
   WITH CHECK (
@@ -202,5 +141,9 @@ CREATE POLICY occupancies_admin_update ON public.occupancies
     )
   );
 
-ALTER PUBLICATION supabase_realtime ADD TABLE public.occupancies;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.parking_spots;
+-- Drop RPC functions no longer needed
+DROP FUNCTION IF EXISTS public.claim_spot(uuid);
+DROP FUNCTION IF EXISTS public.release_spot(uuid);
+DROP FUNCTION IF EXISTS public.admin_release_spot(uuid);
+DROP FUNCTION IF EXISTS public.reset_all_occupancies();
+DROP FUNCTION IF EXISTS public.is_admin();

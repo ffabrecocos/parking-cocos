@@ -23,8 +23,15 @@ async function requireAdmin() {
 export async function adminReleaseSpot(spotId: string) {
   try {
     const supabase = await requireAdmin();
-    const { error } = await supabase.rpc("admin_release_spot", { p_spot_id: spotId });
+    const { data, error } = await supabase
+      .from("occupancies")
+      .update({ released_at: new Date().toISOString() })
+      .eq("spot_id", spotId)
+      .is("released_at", null)
+      .select("id");
+
     if (error) return { error: error.message };
+    if (!data?.length) return { error: "La cochera no está ocupada" };
     revalidatePath("/spots");
     return { success: true };
   } catch (e) {
@@ -35,10 +42,15 @@ export async function adminReleaseSpot(spotId: string) {
 export async function resetDay() {
   try {
     const supabase = await requireAdmin();
-    const { data, error } = await supabase.rpc("reset_all_occupancies");
+    const { data, error } = await supabase
+      .from("occupancies")
+      .update({ released_at: new Date().toISOString() })
+      .is("released_at", null)
+      .select("id");
+
     if (error) return { error: error.message };
     revalidatePath("/spots");
-    return { success: true, released: data as number };
+    return { success: true, released: data?.length ?? 0 };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Error" };
   }

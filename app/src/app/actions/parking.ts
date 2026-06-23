@@ -5,7 +5,18 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function claimSpot(spotId: string) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("claim_spot", { p_spot_id: spotId });
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "No autenticado" };
+  }
+
+  const { error } = await supabase.from("occupancies").insert({
+    spot_id: spotId,
+    user_id: user.id,
+  });
 
   if (error) {
     return { error: error.message };
@@ -17,12 +28,32 @@ export async function claimSpot(spotId: string) {
 
 export async function releaseSpot(spotId?: string) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("release_spot", {
-    p_spot_id: spotId ?? null,
-  });
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "No autenticado" };
+  }
+
+  let query = supabase
+    .from("occupancies")
+    .update({ released_at: new Date().toISOString() })
+    .eq("user_id", user.id)
+    .is("released_at", null);
+
+  if (spotId) {
+    query = query.eq("spot_id", spotId);
+  }
+
+  const { data, error } = await query.select("id");
 
   if (error) {
     return { error: error.message };
+  }
+
+  if (!data?.length) {
+    return { error: "No active spot to release" };
   }
 
   revalidatePath("/");
